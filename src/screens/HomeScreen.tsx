@@ -6,6 +6,8 @@ import { Section } from "../Section";
 import { useAuthorization } from "../utils/useAuthorization";
 import { AccountDetailFeature } from "../components/account/account-detail-feature";
 import { SignInFeature } from "../components/sign-in/sign-in-feature";
+import { StrategyCard } from '../components/StrategyCard';
+import { MarketHomeScreen } from "./MarketScreen";
 
 export function HomeScreen() {
   const { selectedAccount } = useAuthorization();
@@ -22,18 +24,8 @@ export function HomeScreen() {
         <AccountDetailFeature />
       ) : (
         <>
-          <Section
-            title="Solana SDKs"
-            description="Configured with Solana SDKs like Mobile Wallet Adapter and web3.js."
-          />
-          <Section
-            title="UI Kit and Navigation"
-            description="Utilizes React Native Paper components and the React Native Navigation library."
-          />
-          <Section
-            title="Get started!"
-            description="Connect or Sign in with Solana (SIWS) to link your wallet account."
-          />
+        <MarketHomeScreen />
+          <StrategyCard />
           <SignInFeature />
         </>
       )}
