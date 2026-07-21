@@ -3,49 +3,65 @@ import React from "react";
 import { TopBar } from "../components/top-bar/top-bar-feature";
 import { HomeScreen } from "../screens/HomeScreen";
 import MaterialCommunityIcon from "@expo/vector-icons/MaterialCommunityIcons";
-import { useTheme } from "react-native-paper";
-import BlankScreen from "../screens/BlankScreen";
+import DiscoverScreen from "../screens/DiscoverScreen";
+import ActivityScreen from "../screens/ActivityScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import { BrandColors } from "../theme/brand";
 
 const Tab = createBottomTabNavigator();
 
-/**
- * This is the main navigator with a bottom tab bar.
- * Each tab is a stack navigator with its own set of screens.
- *
- * More info: https://reactnavigation.org/docs/bottom-tab-navigator/
- */
 export function HomeNavigator() {
-  const theme = useTheme();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        header: () => <TopBar />,
+        headerShown: route.name !== "Home",
+        header: route.name !== "Home" ? () => <TopBar /> : undefined,
+        tabBarStyle: {
+          backgroundColor: BrandColors.tabBar,
+          borderTopColor: BrandColors.border,
+          borderTopWidth: 1,
+          height: 60,
+          paddingBottom: 8,
+          paddingTop: 4,
+        },
+        tabBarActiveTintColor: BrandColors.purpleLight,
+        tabBarInactiveTintColor: BrandColors.textMuted,
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: "600",
+        },
         tabBarIcon: ({ focused, color, size }) => {
+          let iconName: keyof typeof MaterialCommunityIcon.glyphMap;
           switch (route.name) {
             case "Home":
-              return (
-                <MaterialCommunityIcon
-                  name={focused ? "home" : "home-outline"}
-                  size={size}
-                  color={color}
-                />
-              );
-            case "Blank":
-              return (
-                <MaterialCommunityIcon
-                  name={
-                    focused ? "application-edit" : "application-edit-outline"
-                  }
-                  size={size}
-                  color={color}
-                />
-              );
+              iconName = focused ? "home" : "home-outline";
+              break;
+            case "Discover":
+              iconName = focused ? "compass" : "compass-outline";
+              break;
+            case "Activity":
+              iconName = focused ? "lightning-bolt" : "lightning-bolt-outline";
+              break;
+            case "Profile":
+              iconName = focused ? "account-circle" : "account-circle-outline";
+              break;
+            default:
+              iconName = "circle";
           }
+          return (
+            <MaterialCommunityIcon name={iconName} size={size} color={color} />
+          );
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Blank" component={BlankScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen name="Discover" component={DiscoverScreen} />
+      <Tab.Screen name="Activity" component={ActivityScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
 }

@@ -11,21 +11,29 @@ import { useCluster } from "../cluster/cluster-data-access";
 export function TopBarWalletButton({
   selectedAccount,
   openMenu,
+  compact,
 }: {
   selectedAccount: Account | null;
   openMenu: () => void;
+  compact?: boolean;
 }) {
   const { connect } = useMobileWallet();
   return (
     <Button
-      icon="wallet"
-      mode="contained-tonal"
+      icon={compact ? undefined : "wallet"}
+      mode="contained"
+      buttonColor="#7C3AED"
+      textColor="#FFF"
+      compact={compact}
       style={{ alignSelf: "center" }}
+      labelStyle={compact ? { fontSize: 12, marginHorizontal: 4 } : undefined}
       onPress={selectedAccount ? openMenu : connect}
     >
       {selectedAccount
         ? ellipsify(selectedAccount.publicKey.toBase58())
-        : "Connect"}
+        : compact
+          ? "Connect"
+          : "Connect Wallet"}
     </Button>
   );
 }
@@ -43,7 +51,7 @@ export function TopBarSettingsButton() {
   );
 }
 
-export function TopBarWalletMenu() {
+export function TopBarWalletMenu({ compact = false }: { compact?: boolean }) {
   const { selectedAccount } = useAuthorization();
   const { getExplorerUrl } = useCluster();
   const [visible, setVisible] = useState(false);
@@ -76,6 +84,7 @@ export function TopBarWalletMenu() {
         <TopBarWalletButton
           selectedAccount={selectedAccount}
           openMenu={openMenu}
+          compact={compact}
         />
       }
     >

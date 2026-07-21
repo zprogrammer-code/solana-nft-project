@@ -42,6 +42,9 @@ export default function App() {
     colors: {
       ...MD3DarkTheme.colors,
       ...DarkTheme.colors,
+      primary: "#7C3AED",
+      background: "#0F0E17",
+      surface: "#1A1926",
     },
   };
   return (
